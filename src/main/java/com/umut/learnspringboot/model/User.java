@@ -3,7 +3,7 @@ package com.umut.learnspringboot.model;
 import java.util.UUID;
 
 public class User {
-    private final UUID userUid;
+    private UUID userUid;
     private final String firstName;
     private final String lastName;
     private final String email;
@@ -21,6 +21,10 @@ public class User {
 
     public UUID getUserUid() {
         return userUid;
+    }
+
+    public void setUserUid(UUID uuid) {
+        this.userUid = uuid;
     }
 
     public String getFirstName() {

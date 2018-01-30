@@ -34,8 +34,7 @@ public class UserService {
     public int updateUser(User user) {
         Optional<User> userOptional = getUser(user.getUserUid());
         if (userOptional.isPresent()){
-            userDao.updateUser(user);
-            return 1;
+           return userDao.updateUser(user);
         }
         return -1;
     }
@@ -44,15 +43,16 @@ public class UserService {
     public int removeUser(UUID userUid) {
         Optional<User> userOptional = getUser(userUid);
         if (userOptional.isPresent()) {
-            userDao.deleteUserByUuid(userUid);
-            return 1;
+           return userDao.deleteUserByUuid(userUid);
         }
         return -1;
     }
 
 
     public int insertUser(User user) {
-        return userDao.insertUser(UUID.randomUUID(), user);
+        UUID userUid = UUID.randomUUID();
+        user.setUserUid(userUid);
+        return userDao.insertUser(userUid, user);
     }
 }
 
