@@ -18,7 +18,8 @@ public class FakeDataDao implements UserDao {
     static {
         database = new HashMap<>();
         UUID umutUserUid = UUID.randomUUID();
-        database.put(umutUserUid, new User(umutUserUid, "Umut", "Uzun","umutuzun@example.com", Gender.MALE, 29 ));
+        database.put(umutUserUid, new User(umutUserUid, "Umut", "Uzun","umutuzun@example.com",
+                Gender.MALE, 29 ));
     }
 
     @Override
