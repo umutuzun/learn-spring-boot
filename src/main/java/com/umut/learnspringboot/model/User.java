@@ -55,7 +55,7 @@ public class User {
                 '}';
     }
 
-    enum Gender {
+    public  enum Gender {
         MALE,
         FEMALE
     }
