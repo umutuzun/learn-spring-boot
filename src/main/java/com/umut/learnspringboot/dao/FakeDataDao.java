@@ -2,12 +2,15 @@ package com.umut.learnspringboot.dao;
 
 import com.umut.learnspringboot.model.User;
 import com.umut.learnspringboot.model.User.Gender;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 /**
  * Created by Umut Uzun on 1/30/2018.
  */
+
+@Repository
 public class FakeDataDao implements UserDao {
 
     private static Map<UUID, User> database;
