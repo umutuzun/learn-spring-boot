@@ -10,12 +10,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 public class UserServiceTest {
@@ -71,7 +71,8 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUser() {
+    public void shouldUpdateUser() {
+
         UUID gomisUid = UUID.randomUUID();
         User gomis = new User(gomisUid, "Bafetimbi", "Gomis", "bgomis@example.com",
                 User.Gender.MALE, 32);
@@ -94,11 +95,42 @@ public class UserServiceTest {
     }
 
     @Test
-    public void removeUser() {
+    public void shouldRemoveUser() {
+
+        UUID gomisUid = UUID.randomUUID();
+        User gomis = new User(gomisUid, "Bafetimbi", "Gomis", "bgomis@example.com",
+                User.Gender.MALE, 32);
+
+        given(fakeDataDao.selectUserByUuid(gomisUid)).willReturn(Optional.of(gomis));
+        given(fakeDataDao.deleteUserByUuid(gomisUid)).willReturn(1);
+
+        int deleteResult = userService.removeUser(gomisUid);
+
+        verify(fakeDataDao).selectUserByUuid(gomisUid);
+        verify(fakeDataDao).deleteUserByUuid(gomisUid);
+
+        assertThat(deleteResult).isEqualTo(1);
+
     }
 
     @Test
-    public void insertUser() {
+    public void shouldInsertUser() {
+        User gomis = new User(null, "Bafetimbi", "Gomis", "bgomis@example.com",
+                User.Gender.MALE, 32);
+
+        given(fakeDataDao.insertUser(any(UUID.class), eq(gomis))).willReturn(1);
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        int insertResult = userService.insertUser(gomis);
+
+        verify(fakeDataDao).insertUser(any(UUID.class), captor.capture());
+
+        User user = captor.getValue();
+
+        assertUserFields(user);
+
+        assertThat(insertResult).isEqualTo(1);
     }
 
 
@@ -108,6 +140,6 @@ public class UserServiceTest {
         assertThat(user.getLastName()).isEqualTo("Gomis");
         assertThat(user.getGender()).isEqualTo(User.Gender.MALE);
         assertThat(user.getEmail()).isEqualTo("bgomis@example.com");
-        assertThat(user.getUserUid()).isNotNull();
+        assertThat(user.getUserUid()).isInstanceOf(UUID.class);
     }
 }
