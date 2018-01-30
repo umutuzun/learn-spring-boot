@@ -3,6 +3,7 @@ package com.umut.learnspringboot.dao;
 import com.umut.learnspringboot.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -12,7 +13,7 @@ public interface UserDao {
 
     List<User> selectAllUsers();
 
-    User selectUserByUuid(UUID userUid);
+    Optional<User> selectUserByUuid(UUID userUid);
 
     int updateUser(User user);
 
