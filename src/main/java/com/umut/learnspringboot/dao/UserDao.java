@@ -10,13 +10,13 @@ import java.util.UUID;
  */
 public interface UserDao {
 
-    List<User> getAllUsers();
+    List<User> selectAllUsers();
 
-    User getUser(UUID userUid);
+    User selectUserByUuid(UUID userUid);
 
     int updateUser(User user);
 
-    int removeUser(UUID userUid);
+    int deleteUserByUuid(UUID userUid);
 
     int insertUser(UUID userUid, User user);
 }
