@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,14 +31,16 @@ public class UserResource {
     }
 
     @RequestMapping(
-            method = RequestMethod.GET
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<User> fetchUsers() {
-        return userService.getAllUsers();
+    public List<User> fetchUsers(@QueryParam("gender") String gender) {
+        return userService.getAllUsers(Optional.ofNullable(gender));
     }
 
     @RequestMapping(
             method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE,
             path = "{userUid}"
     )
     public ResponseEntity fetchUser(@PathVariable("userUid")UUID userUid) {
@@ -48,7 +51,8 @@ public class UserResource {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Integer> insertNewUser(@RequestBody User user) {
         int result = userService.insertUser(user);
@@ -64,7 +68,8 @@ public class UserResource {
 
     @RequestMapping(
             method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Integer> updateUser(@RequestBody User user) {
         int result = userService.updateUser(user);
@@ -73,6 +78,7 @@ public class UserResource {
 
     @RequestMapping(
             method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
             path = "{userUid}"
     )
     public ResponseEntity<Integer> deleteUser(@PathVariable("userUid") UUID userUid) {

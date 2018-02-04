@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by Umut Uzun on 1/30/2018.
@@ -22,10 +23,19 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public List<User> getAllUsers() {
-        return userDao.selectAllUsers();
+    public List<User> getAllUsers(Optional<String> gender) {
+        List<User> users = userDao.selectAllUsers();
+        if (!gender.isPresent()) {
+            return users;
+        }
+        try {
+            User.Gender queriedGender = User.Gender.valueOf(gender.get().toUpperCase());
+            return users.stream()
+                    .filter(user -> user.getGender().equals(queriedGender)).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new IllegalStateException("Invalid gender", e);
+        }
     }
-
 
     public Optional<User> getUser(UUID userUid) {
         return userDao.selectUserByUuid(userUid);
