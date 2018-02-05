@@ -1,16 +1,24 @@
 package com.umut.learnspringboot.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class User {
-    private UUID userUid;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private Gender gender;
-    private Integer age;
+    private final UUID userUid;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final Gender gender;
+    private final Integer age;
 
-    public User(UUID userUid, String firstName, String lastName, String email, Gender gender, Integer age) {
+    public User(@JsonProperty("userUid") UUID userUid,
+                @JsonProperty("firstName") String firstName,
+                @JsonProperty("lastName") String lastName,
+                @JsonProperty("email") String email,
+                @JsonProperty("gender") Gender gender,
+                @JsonProperty("age") Integer age) {
         this.userUid = userUid;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,15 +27,9 @@ public class User {
         this.age = age;
     }
 
-    public User() {
-    }
-
+    @JsonProperty("id")
     public UUID getUserUid() {
         return userUid;
-    }
-
-    public void setUserUid(UUID uuid) {
-        this.userUid = uuid;
     }
 
     public String getFirstName() {
@@ -48,6 +50,14 @@ public class User {
 
     public Integer getAge() {
         return age;
+    }
+
+    public static User newUser(UUID userUid, User user){
+        return new User(userUid, user.getFirstName(), user.getLastName(), user.getEmail(), user.gender, user.getAge());
+    }
+
+    public int getYearOfBirth() {
+        return LocalDate.now().minusYears(age).getYear();
     }
 
     @Override
