@@ -17,16 +17,16 @@ import java.util.UUID;
  * Created by Umut Uzun on 2/1/2018.
  */
 
-@RestController
-@RequestMapping(
-        path = "api/v1/users"
-)
-public class UserResource {
+//@RestController
+//@RequestMapping(
+ //       path = "api/v1/users"
+//)
+public class UserResourceSpringMVC {
 
     private UserService userService;
 
     @Autowired
-    public UserResource(UserService userService) {
+    public UserResourceSpringMVC(UserService userService) {
         this.userService = userService;
     }
 
