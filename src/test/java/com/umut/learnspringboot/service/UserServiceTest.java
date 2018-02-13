@@ -144,16 +144,18 @@ public class UserServiceTest {
 
     @Test
     public void shouldInsertUser() {
-        User gomis = new User(null, "Bafetimbi", "Gomis", "bgomis@example.com",
+        UUID userUid = UUID.randomUUID();
+
+        User gomis = new User(userUid, "Bafetimbi", "Gomis", "bgomis@example.com",
                 User.Gender.MALE, 32);
 
-        given(fakeDataDao.insertUser(any(UUID.class), eq(gomis))).willReturn(1);
+        given(fakeDataDao.insertUser(any(UUID.class), any(User.class))).willReturn(1);
 
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 
         int insertResult = userService.insertUser(gomis);
 
-        verify(fakeDataDao).insertUser(any(UUID.class), captor.capture());
+        verify(fakeDataDao).insertUser(eq(userUid), captor.capture());
 
         User user = captor.getValue();
 
