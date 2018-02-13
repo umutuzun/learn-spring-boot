@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Created by Umut Uzun on 1/30/2018.
@@ -49,7 +52,6 @@ public class UserService {
         return -1;
     }
 
-
     public int removeUser(UUID userUid) {
         Optional<User> userOptional = getUser(userUid);
         if (userOptional.isPresent()) {
@@ -58,10 +60,10 @@ public class UserService {
         return -1;
     }
 
-
     public int insertUser(User user) {
-        UUID userUid = UUID.randomUUID();
+        UUID userUid = user.getUserUid() == null ? UUID.randomUUID() : user.getUserUid();
         return userDao.insertUser(userUid, User.newUser(userUid, user));
     }
+
 }
 
